@@ -23,6 +23,9 @@
 
 package microsoft.exchange.webservices.data.core;
 
+import com.sun.org.apache.xerces.internal.impl.Constants;
+import com.sun.org.apache.xerces.internal.impl.XMLErrorReporter;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -87,7 +90,12 @@ public class EwsServiceMultiResponseXmlReader extends EwsServiceXmlReader {
     XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     InputStreamReader isr = new InputStreamReader(stream);
     BufferedReader in = new BufferedReader(isr);
-    return inputFactory.createXMLEventReader(in);
+    XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
+    XMLErrorReporter errorReporter = (XMLErrorReporter) eventReader.getProperty(Constants.XERCES_PROPERTY_PREFIX
+            + Constants.ERROR_REPORTER_PROPERTY);
+    errorReporter.setFeature(Constants.XERCES_FEATURE_PREFIX +
+            Constants.CONTINUE_AFTER_FATAL_ERROR_FEATURE, true);
+    return eventReader;
   }
 
 
