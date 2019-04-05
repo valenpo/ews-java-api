@@ -195,22 +195,19 @@
         <url>https://travis-ci.org/OfficeDev/ews-java-api</url>
     </ciManagement>
 
-    <scm>
-        <url>https://github.com/OfficeDev/ews-java-api</url>
-        <connection>scm:git:ssh://git@github.com:OfficeDev/ews-java-api.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:OfficeDev/ews-java-api.git</developerConnection>
-    </scm>
-
     <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh-snapshot</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
         <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+            <id>central</id>
+            <name>sourcecode.c.mailarchiva-compute.internal-releases</name>
+            <url>http://maven.mailarchiva.org/artifactory/libs-release</url>
         </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>sourcecode.c.mailarchiva-compute.internal-snapshots</name>
+            <url>http://maven.mailarchiva.org/artifactory/libs-snapshot</url>
+        </snapshotRepository>
     </distributionManagement>
+
 
     <dependencies>
         <dependency>
