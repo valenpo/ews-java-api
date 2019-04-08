@@ -23,11 +23,14 @@
 
 package microsoft.exchange.webservices.data.core;
 
+import com.github.rwitzel.streamflyer.core.ModifyingReader;
 import microsoft.exchange.webservices.data.core.enumeration.misc.XmlNamespace;
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceXmlDeserializationException;
 import microsoft.exchange.webservices.data.misc.OutParam;
 import microsoft.exchange.webservices.data.security.XmlNodeType;
+import microsoft.exchange.webservices.data.util.XmlVersionModifier;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.input.XmlStreamReader;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -49,6 +52,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -61,12 +65,13 @@ public class EwsXmlReader {
   /**
    * The Read write buffer size.
    */
-  private static final int ReadWriteBufferSize = 4096;
+  public static final int ReadWriteBufferSize = 8192;
 
   /**
    * The xml reader.
    */
   private XMLEventReader xmlReader = null;
+
 
   /**
    * The present event.
@@ -99,7 +104,11 @@ public class EwsXmlReader {
     XMLInputFactory inputFactory = XMLInputFactory.newInstance();
     inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
 
-    return inputFactory.createXMLEventReader(stream);
+    Reader reader = new XmlStreamReader(stream);
+    ModifyingReader modifyingReader = new ModifyingReader(reader,
+            new XmlVersionModifier("1.1", ReadWriteBufferSize));
+
+    return inputFactory.createXMLEventReader(modifyingReader);
   }
 
 
